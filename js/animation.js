@@ -5,7 +5,7 @@ function setup() {
   createCanvas(innerWidth, innerHeight);
   colorMode(HSB, 255);
 	noFill();
-  background(255);
+  background("black");
 }
 
 function draw() {
