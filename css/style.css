@@ -20,16 +20,14 @@
 	body{
 		overflow: hidden;
 	}
-	canvas{
-		background-color: aqua;
-	}
-
+	
 
 	.project{
 		position: absolute;
 		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		/*justify-content: space-between;*/
+		justify-content: center;
 		height: max-content;
 		font-size: 22vw;
 	
@@ -38,14 +36,17 @@
 
 	a{
 		
-		padding: 20px;
+		padding: 7px;
 		/*color:aliceblue;*/
+		border: solid 2px black;
 		text-decoration: none;
+		border-radius: 5%;
+		margin: 10px;
 		
 	}
 	a:hover{
-		border: solid 2px black;
-		box-shadow: 5px 10px  black ;
+		box-shadow: 5px 10px  rgb(24, 12, 0) ;
+		background-color: aliceblue;
 
 	}
 	footer{
@@ -66,7 +67,8 @@
 	}
 
 	@media only screen and (min-width: 768px) {
-		.project{font-size: 2.7rem;}
+		.project{font-size: 2.7rem; justify-content: flex-end;}
+
 		h1{font-size: 5rem;}
 	}
 	
