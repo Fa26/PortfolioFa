@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+@font-face {
+	font-family: 'ITA';
+	src: url('/fonts/ITCAvantGardeStd-Bk.ttf');
+	
+  }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:"ITA",serif ;
+    
+    
+}
+
+nav{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color:transparent!;
+    display: flex;
+    justify-content:center;
+    color: aliceblue;
+    z-index: 999;
+    
+
+
+}
+nav>div{margin: 10px; font-size: 8vw;}
+.contact{display: flex;}
+.contact>a{margin-left: 10px; padding: 4px; }
+a{text-decoration: none;}
+.home{color: yellow;}
+.git{color:rgb(243, 58, 243)}
+.linked{color:aqua;}
+.fa{color: orange; }
+
+#aboutText{
+    color:white;
+    position: absolute;
+    width: 100%;
+    background-color: transparent!;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2rem;
+    text-align: justify;
+
+}
+
+
+video{
+    position: absolute;
+    top: 0;
+    z-index: -999;
+    background-color: black;
+    width: 100%;
+    
+}
+#myvideo{
+    width: 100%;
+    height: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+    #aboutText{
+        font-size: 3.3rem;
+    }
+    a{
+        font-size: 4vw;
+    }
+    .fa{font-size: 4vw;}
+}
