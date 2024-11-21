@@ -9,7 +9,7 @@ function setup() {
 
   }
   else{
-    createCanvas(displayWidth, displayHeight);
+    createCanvas(displayWidth, displayHeight-190);
     document.getElementById("pro").style.background="red";
     document.getElementById("fa").style.background="red";
   }
@@ -21,7 +21,6 @@ function setup() {
 
 function draw() {
 	beginShape();
-  rectMode(CENTER)
   for (let p of particles) {
     p.draw();
     p.move();
@@ -72,16 +71,4 @@ function Particle(x_, y_, s_, c_) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight /2);
-}
-
-function touchStarted(){
-  return false;
-}
-
-function touchMoved(){
-  return false;
-}
-
-function touchEnded(){
-  return false;
 }

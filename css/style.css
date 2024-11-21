@@ -69,6 +69,8 @@
 		display: flex;
 		align-items: center;
 		background-color: black;
+		z-index: -999;
+		position: absolute;
 	}
 	
 	
