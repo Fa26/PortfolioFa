@@ -65,16 +65,16 @@ a{
     text-decoration: none;
     color: black;
 }
-.notesReact:hover{
+.notesReact{
     background-color:rgb(238, 102, 5) ;
 
 }
-.machineL:hover{
+.machineL{
     background-color: rgb(194, 225, 18);
 }
-.creative:hover{
+.creative{
     background-color: rgb(208, 160, 17);
 }
-.home:hover{
+.home{
     background-color: burlywood;
 }
