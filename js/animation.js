@@ -2,14 +2,26 @@ let particles = [];
 let squiggliness = 10/100;
 
 function setup() {
-  createCanvas(innerWidth, innerHeight);
+  let w = innerWidth;
+  let h = innerHeight;
+  if(w>700){
+    createCanvas(displayWidth, displayHeight);
+
+  }
+  else{
+    createCanvas(displayWidth, displayHeight);
+    document.getElementById("pro").style.background="red";
+    document.getElementById("fa").style.background="red";
+  }
   colorMode(HSB, 255);
 	noFill();
   background("black");
+  //windowResized();
 }
 
 function draw() {
 	beginShape();
+  rectMode(CENTER)
   for (let p of particles) {
     p.draw();
     p.move();
@@ -56,4 +68,20 @@ function Particle(x_, y_, s_, c_) {
 		curveVertex(this.x, this.y);
     this.c.setAlpha(100);
   }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight /2);
+}
+
+function touchStarted(){
+  return false;
+}
+
+function touchMoved(){
+  return false;
+}
+
+function touchEnded(){
+  return false;
 }
