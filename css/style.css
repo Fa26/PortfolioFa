@@ -11,7 +11,7 @@
 		padding: 0;
 		box-sizing: border-box;
 		font-family:"ITA",serif ;
-		color:black;
+		color:rgb(17, 17, 17);
 		font-weight: 600;
 	
 		
@@ -44,8 +44,8 @@
 		
 	}
 	a:hover{
-		box-shadow: 5px 10px  rgb(24, 12, 0) ;
-		background-color: aliceblue;
+		box-shadow: 5px 10px  rgb(4, 4, 3) ;
+		background-color: transparent!;
 
 	}
 	footer{
@@ -83,6 +83,7 @@
 
 	/*desktop*/
 	@media (min-width: 1024px) {
+		*{color: white;}
 		.project{justify-content: space-between;}
 		a{font-size: 2.5rem;}
 		footer{font-size:2.7rem;}
