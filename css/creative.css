@@ -25,64 +25,36 @@ a{
    
  h1 {
   
-        color: #dfed33;
-        font-size: 80px;
-        font-family: Oswald;
-        text-transform: uppercase;
+    color: #dfed33;
+    font-size: 80px;
+    font-family: Oswald;
+    text-transform: uppercase;
     
     }
-  .glitchButton{
-    position:absolute;
-    top:0px; 
-
-    height: 100vh;
-    width: 100%;
-  }
-   /****gallery*/
-
-.flex-container {
-    position:absolute ;
-   top:610px;
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    width: 100%;
-    height: 250px;
-  }
-  
-  .flex-item-left {
-
-    background-image: url('/img/g.png') ;
-    flex: 50%;
-    border-radius: 0 90px  90px 0;
-    display: flex;
-    justify-content: center;
-    align-items:flex-end;
-    border:solid black 2px;
-    font-size:4rem ;
-  }
-  .tea{
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    background-image: url('/img/tea.png') ;
-    background-position: center;
-    flex: 50%;
-    border-radius: 90px 0 0 90px;
-    border:solid rgb(2, 2, 1) 2px;
-    font-size: 4rem;
-    
-
-  }
-
-  /**python**/
-  .generativePython{
+  main{
     position: absolute;
-    background-color: #ff6961;
-    top: 1060px;
+    top: 130px;
+    background-color: transparent!;
+    z-index: 99999;
     width: 100%;
+    height: 50%;
+    font-family: Oswald;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
   }
+  .linksCreative>a{
+    font-size: 3rem;
+    color: #d8f003;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    flex-direction:row;
+
+   
+  }
+ 
   
  
   
