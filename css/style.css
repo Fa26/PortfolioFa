@@ -35,7 +35,7 @@
 	a{
 		
 		padding: 7px;
-		border: solid 2px black;
+	/*	border: solid 2px black;*/
 		text-decoration: none;
 		border-radius: 5%;
 		margin: 10px;
@@ -83,7 +83,7 @@
 
 	/*desktop*/
 	@media (min-width: 1024px) {
-		.project{justify-content: flex-end;}
+		.project{justify-content: space-between;}
 		a{font-size: 2.5rem;}
 		footer{font-size:2.7rem;}
 		.title{text-align: left;}

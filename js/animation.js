@@ -10,8 +10,8 @@ function setup() {
   }
   else{
     createCanvas(displayWidth, displayHeight-190);
-    document.getElementById("pro").style.background="red";
-    document.getElementById("fa").style.background="red";
+    document.getElementById("pro").style.background="white";
+    document.getElementById("fa").style.background="white";
   }
   colorMode(HSB, 255);
 	noFill();
