@@ -2,11 +2,12 @@
 <html>
 <head>
 	<title>Fatima</title>
+	<meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
+
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<!--p5.js-->
 	<script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.js"></script>
 	<script src="js/animation.js"></script>
-	<meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
 	<!--scroll reveal-->
 	<script src="https://unpkg.com/scrollreveal"></script>
 
@@ -18,29 +19,42 @@
 </head>
 
 <body>
-
-	<!--Header-->
-	<div class="project" id="pro">
-		<a id="pro" href="proyects.html">Projects</a>
-		<a id="about" href="aboutMe.html"> About Me</a>
-	</div>
-
-	<footer id="fa">
+	<main>
 		<div class="title">
-			<h1 class="faty">Fatima.</h1>
+			<div class="fa">
+				<h1>Fatima</h1>
+			</div>
+			<div class="pro">
+				<a href="aboutMe.html">AboutMe</a>
+				<a  id="menuCall" onclick="openM()">CallMe</a>
+				<a href="proyects.html">Projects</a>
+			</div>
 		</div>
-	
-	</footer>	
+
+		<div id="call" class="menu-contact">
+			<div class="contenido-contact">
+				<h2>Call Me</h2>
+				<a>github</a>
+				<a>linkendin</a>
+				<a id="exit" onclick="exit()"> X </a>
+			</div>
+		</div>
+
+	</main>
+
+
 </body>
 
 <script>
 	
-ScrollReveal().reveal('.project',{
+
+	
+ScrollReveal().reveal('.title',{
 		delay: 9000,
 		duration:500,
 		origin:'bottom'
 	});
-	ScrollReveal().reveal('.faty',{
+	ScrollReveal().reveal('.pro',{
 		delay: 9000,
 		duration:500,
 		origin:'bottom'

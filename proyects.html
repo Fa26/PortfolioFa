@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyects</title>
     <link rel="stylesheet" href="/css/project_s.css">
+    <!--gsap-->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+
     
 </head>
 <body>
@@ -12,7 +16,7 @@
         <div class="project-main">
             <div class="title-p"><h1>Projects</h1></div>
             <div class="links-project">
-                <div class="reactG">React-game</div>
+                <div class="reactG"  >React-game</div>
                 <div class="machineL"><a href="https://github.com/Fa26/I.A">Machine learning</a></div>
                 <div class="creative"><a href="creative.html">Creative Code</a></div>
                 <div>Flask</div>
@@ -25,6 +29,15 @@
             </div>
         </div>
     </div>
+    <script>
+        gsap.to(".reactG", { 
+            x:9,
+            y:9,
+            duration:10,
+            delay:2,
+            yoyo:true
+        });
+    </script>
     
 </body>
 </html>

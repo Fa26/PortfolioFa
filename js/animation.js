@@ -9,14 +9,27 @@ function setup() {
 
   }
   else{
-    createCanvas(displayWidth, displayHeight-190);
-    document.getElementById("pro").style.background="white";
-    document.getElementById("fa").style.background="white";
+    createCanvas(displayWidth, displayHeight);
+
   }
   colorMode(HSB, 255);
 	noFill();
   background("black");
-  //windowResized();
+  windowResized();
+ 
+}
+function openM(){
+  document.getElementById("call").style.display="block"
+  document.getElementById("call").style.width="50%"
+
+
+}
+function exit(){
+  document.getElementById("call").style.width="0%"
+  document.getElementById("call").style.display="none"
+
+  
+
 }
 
 function draw() {
@@ -70,5 +83,5 @@ function Particle(x_, y_, s_, c_) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight /2);
+  resizeCanvas(windowWidth, windowHeight);
 }

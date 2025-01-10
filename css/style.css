@@ -11,7 +11,6 @@
 		padding: 0;
 		box-sizing: border-box;
 		font-family:"ITA",serif ;
-		color:rgb(17, 17, 17);
 		font-weight: 600;
 	
 		
@@ -21,44 +20,35 @@
 	}
 	
 
-	.project{
-		position: absolute;
-		width: 100%;	
-		height: max-content;
-		display: flex;
-		justify-content: center;
-		
 	
-	}
-	
-
 	a{
 		
 		padding: 7px;
-	/*	border: solid 2px black;*/
-		text-decoration: none;
-		border-radius: 5%;
 		margin: 10px;
 		font-size: 2rem;
+		text-decoration: none;
+		cursor: pointer;
 		
 		
+		
 	}
-	a:hover{
-		box-shadow: 5px 10px  rgb(4, 4, 3) ;
-		background-color: transparent!;
+	.pro>a{
+		color: black;
+	}
 
-	}
-	footer{
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		font-size: 3rem;
+	.pro>a:hover{background-color: rgb(246, 246, 246); border-radius: 5%; border: solid 2px black}
 
-	}
+
 	.title{
+		position: absolute;
 		width: 100%;
-		height: max-content;	
+		height: 100vh;	
 		text-align: center;
+		background-color: transparent;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
 		
 		
 		
@@ -68,24 +58,65 @@
 		height: 100vh;
 		display: flex;
 		align-items: center;
-		background-color: black;
-		z-index: -999;
+		z-index: -9999;
+		background-color: rgb(16, 16, 16);
 		position: absolute;
 	}
+	h1{
+		font-size: 4.3rem;
+	}
+	h2{
+		color: white;
+		text-transform: capitalize;
+		font-size: 2.7rem;
+	}
+
+	span{
+		
+		color: aliceblue;
+	}
+	.menu-contact{
+		display: none;
+		width: 50%;
+		background-color: rgb(0, 0, 0);
+		z-index: 1;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 100vh;
+		border-radius: 0 0px 1020px 0;
+		transition: 0.5s;
+	}
+	.contenido-contact{
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		color: aliceblue;
+	}
+	.contenido-contact>a{
+		color: white;
+	}
+
 	
 	
 
 	/*tablets*/
 	@media (min-width: 768px) {
-		a{font-size: 5rem;}
-		footer{font-size: 4rem;}
+		a{font-size: 3rem; text-decoration: none; color: black;}
+		h1{font-size: 9rem;}
+		main{
+			background-color:black;
+			height: 100vh;
+			width: 100%;
+			position: absolute;
+		}
 	}
 
 	/*desktop*/
 	@media (min-width: 1024px) {
-		*{color: white;}
-		.project{justify-content: space-between;}
-		a{font-size: 2.5rem;}
-		footer{font-size:2.7rem;}
-		.title{text-align: left;}
+		*{color: rgb(6, 6, 6);}
+		a{font-size: 2rem;}
+		.title{text-align: center; font-size: 3rem;}
 	}
