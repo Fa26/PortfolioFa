@@ -36,7 +36,7 @@
 		color: black;
 	}
 
-	.pro>a:hover{background-color: rgb(246, 246, 246); border-radius: 5%; border: solid 2px black}
+	.pro>a:hover{background-color: #d8f003; border-radius: 5%; border: solid 2px black}
 
 
 	.title{
