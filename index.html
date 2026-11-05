@@ -1,78 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-	<title>Fatima</title>
-	<meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width">
-
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<!--p5.js-->
-	<script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.js"></script>
-	<script src="js/animation.js"></script>
-	<!--scroll reveal-->
-	<script src="https://unpkg.com/scrollreveal"></script>
-
-	<!--font-->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>FATIMA</title>
+<meta name="description" content="Portafolio de neurociencia: cerebro de fibras y neurona en 3D">
+<!--<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">-->
+<style>
+:root{--bg:#000;--fg:#eaf2ff;--pill:rgba(20,22,34,.75);--bd:rgba(255,255,255,.2);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+canvas{display:block;width:100%;height:100%}
+#ui{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;padding:14px;display:flex;flex-wrap:wrap;gap:8px;pointer-events:none}
+#listInfo{display: flex; justify-content: space-between;}
+button{pointer-events:auto;cursor:pointer;font:inherit;font-size:14px;background:var(--pill);color:var(--fg);border:1px solid var(--bd);padding:8px 14px;border-radius:999px;backdrop-filter:blur(6px)}
+button.on{background:#eaf2ff;color:#0b1020}
+#title{position:fixed;left:28px;bottom:calc(30px + env(safe-area-inset-bottom,0px));pointer-events:none;text-shadow:0 2px 20px #000}
+#title h2{margin:0;font-size:clamp(28px,5vw,56px);letter-spacing:.12em;font-weight:300}
+#aboutMe{position:fixed;right:20px;top:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
+#title p{margin:6px 0 0;opacity:.7;letter-spacing:.2em;font-size:clamp(11px,1.4vw,14px);text-transform:uppercase}
+#hint{position:fixed;right:20px;bottom:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
+</style>
 </head>
-
 <body>
-	<main>
-		<div class="title">
-			<div class="fa">
-				<h1>Fatima</h1>
-			</div>
-			<div class="pro">
-				<a href="aboutMe.html">AboutMe</a>
-				<a  id="menuCall" onclick="openM()">Contact Me</a>
-				<a href="proyects.html">Projects</a>
-			</div>
-		</div>
-
-		<div id="call" class="menu-contact">
-			<div class="contenido-contact">
-				<h2>Call Me</h2>
-				<a>Github</a>
-				<a>Linkendin</a>
-				<a id="exit" onclick="exit()"> X </a>
-			</div>
-		</div>
-
-	</main>
-
-
-</body>
-
+<div id="ui">
+  <button id="bBrain" class="on">🧠 Cerebro</button>
+  <button id="bNeuron">🔬 Neurona</button>
+  <button id="bFall">↻ Reensamblar</button>
+  <button id="bFire">⚡ Pulso</button>
+</div>
+<div id="aboutMe">
+  <button>About Me</button>
+  <button>Roast your Code</button>
+  <button>PipeLine</button>
+</div>
+<div id="title"><h2>Fatima</h2><p>Developer </p></div>
+<div id="hint">Mueve el mouse para rotar<br>clic: dispara un pulso · rueda: zoom</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-	
+(function(){
+const $=id=>document.getElementById(id);
+const V=THREE.Vector3,R=Math.random,rv=s=>new V(R()-.5,R()-.5,R()-.5).multiplyScalar(s);
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);renderer.setClearColor(0x000000,1);
+document.body.prepend(renderer.domElement);
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(40,innerWidth/innerHeight,.1,100);camera.position.z=9.5;
+const group=new THREE.Group();scene.add(group);
 
-	
-ScrollReveal().reveal('.title',{
-		delay: 9000,
-		duration:500,
-		origin:'bottom'
-	});
-	ScrollReveal().reveal('.pro',{
-		delay: 9000,
-		duration:500,
-		origin:'bottom'
-	});
-	
+const shared={uT:{value:0},uTime:{value:0},uFire:{value:-100}};
+const VERT=`
+uniform float uT,uTime,uFire,uAmb;
+attribute vec3 aColor,aOff;attribute float aDelay,aD,aPh;
+varying vec3 vC;varying float vP;
+void main(){
+  float t=clamp((uT-aDelay)/1.2,0.,1.);
+  float e=1.-pow(1.-t,3.);
+  vec3 p=position+aOff*(1.-e);
+  float amb=pow(.5+.5*sin(aD*2.5-uTime*2.+aPh),10.)*uAmb;
+  float f=exp(-pow((aD-(uTime-uFire)*5.)*.9,2.));
+  vP=max(amb,f*2.);
+  vC=aColor*(.3+.7*t);
+  gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);
+}`;
+const FRAG=`varying vec3 vC;varying float vP;void main(){gl_FragColor=vec4(vC*(.5+1.9*vP),.7);}`;
+const mat=a=>new THREE.ShaderMaterial({uniforms:{uT:shared.uT,uTime:shared.uTime,uFire:shared.uFire,uAmb:{value:reduced?0:a}},vertexShader:VERT,fragmentShader:FRAG,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending});
 
+function Builder(){
+  const P=[],C=[],O=[],L=[],D=[],H=[];
+  return{
+    push(a,b,c0,c1,o,dl,d0,d1,p){P.push(a.x,a.y,a.z,b.x,b.y,b.z);C.push(...c0,...c1);O.push(...o,...o);L.push(dl,dl);D.push(d0,d1);H.push(p,p)},
+    geo(){const g=new THREE.BufferGeometry(),f=(n,a,s)=>g.setAttribute(n,new THREE.Float32BufferAttribute(a,s));
+      f('position',P,3);f('aColor',C,3);f('aOff',O,3);f('aDelay',L,1);f('aD',D,1);f('aPh',H,1);return g}
+  };
+}
+
+// ---------- CEREBRO ----------
+function surf(){const u=R()*6.283,v=Math.acos(2*R()-1);let y=Math.cos(v)*1.8;if(y<0)y*=.5;return new V(Math.sin(v)*Math.cos(u)*1.7,y,Math.sin(v)*Math.sin(u)*3.0)}
+function dirCol(d){const w=R()*.35,c=[Math.pow(Math.abs(d.x),.6),Math.pow(Math.abs(d.z),.6),Math.pow(Math.abs(d.y),.6)];return c.map(x=>x*(1-w)+w)}
+function brainGeo(){
+  const B=Builder(),S=22;
+  for(let i=0;i<3200;i++){
+    const k=R();let a=surf(),b,c;
+    if(k<.28){b=a.clone();b.x=-b.x;c=new V(0,Math.abs(a.y)*.5+.9,a.z*.8)}
+    else if(k<.62){b=a.clone();b.z+=(R()<.5?-1:1)*(1+R()*1.6);b.y*=.9;c=a.clone().add(b).multiplyScalar(.35)}
+    else{a.y=Math.abs(a.y);b=new V(a.x*.25,-1.9,a.z*.2-.3);c=new V(a.x*.55,.2,a.z*.6)}
+    const n=rv(.7),o=[(R()-.5)*6,7+R()*6,(R()-.5)*6],dl=R()*1.3,ph=R()*6.28;
+    let prev=null;
+    for(let s=0;s<=S;s++){const t=s/S,q=a.clone().multiplyScalar((1-t)*(1-t)).add(c.clone().multiplyScalar(2*(1-t)*t)).add(b.clone().multiplyScalar(t*t)).addScaledVector(n,Math.sin(t*Math.PI));
+      if(prev){const cl=dirCol(q.clone().sub(prev).normalize());B.push(prev,q,cl,cl,o,dl,prev.z+3+t,q.z+3+t,ph)}prev=q}
+  }
+  for(let i=0;i<5500;i++){
+    const s=surf(),inn=s.clone().multiplyScalar(.8),out=s.clone().multiplyScalar(1.05+R()*.08),bend=rv(.3);
+    const o=[(R()-.5)*6,7+R()*6,(R()-.5)*6],dl=1+R()*.9,ph=R()*6.28;let prev=inn;
+    for(let k=1;k<=5;k++){const t=k/5,q=inn.clone().lerp(out,t).addScaledVector(bend,Math.sin(t*Math.PI)),cl=dirCol(q.clone().sub(prev).normalize());
+      B.push(prev,q,cl,cl,o,dl,prev.z+3,q.z+3,ph);prev=q}
+  }
+  return B.geo();
+}
+const brain=new THREE.LineSegments(brainGeo(),mat(.6));brain.rotation.y=Math.PI/2;group.add(brain);
+
+// ---------- NEURONA ----------
+function neuronGeo(){
+  const B=Builder();
+  function seg(a,b,c0,c1,o,dl,d0,d1,p){for(let k=0;k<2;k++){const j=rv(k*.05);B.push(a.clone().add(j),b.clone().add(j),c0,c1,o,dl,d0,d1,p)}}
+  function br(p,dir,len,depth,d0,cf,o,steps,wob,ph){
+    let q=p.clone(),d=d0;const h=len/steps;
+    for(let i=0;i<steps;i++){dir.add(rv(wob)).normalize();const n=q.clone().addScaledVector(dir,h);seg(q,n,cf(d),cf(d+h),o,Math.min(1.4,d/14*1.3),d,d+h,ph);q=n;d+=h}
+    if(depth>0){const kids=depth>2?2:(R()<.5?2:3);for(let k=0;k<kids;k++)br(q,dir.clone().add(rv(1.3)).normalize(),len*.7,depth-1,d,cf,o,Math.max(4,steps-2),wob,ph)}
+    return{q,d};
+  }
+  const dend=d=>{const t=Math.min(1,d/9);return[.45+.55*t,.85-.45*t,1-.3*t]};
+  const axon=d=>[1,.78-.2*Math.min(1,d/16),.25];
+  for(let i=0;i<7;i++){const dir=new V(R()-.5,R()*.9-.1,R()-.5).normalize();
+    br(new V(0,2,0).addScaledVector(dir,.4),dir,2.3,4,.4,dend,[(R()-.5)*5,6+R()*4,(R()-.5)*5],9,.5,R()*6.28)}
+  const ax=br(new V(0,1.6,0),new V(.1,-1,0).normalize(),9,0,.4,axon,[0,-6,0],30,.12,1);
+  for(let i=0;i<5;i++){const dir=new V(R()-.5,-1,R()-.5).normalize();br(ax.q,dir,1.7,2,ax.d,axon,[0,-6,0],8,.35,1)}
+  for(let i=0;i<500;i++){const d=rv(1).normalize(),a=new V(0,2,0).addScaledVector(d,.28),b=new V(0,2,0).addScaledVector(d,.45+R()*.15);
+    B.push(a,b,[1,.9,.7],[1,.9,.7],[d.x*3,d.y*3,d.z*3],0,0,.3,0)}
+  return B.geo();
+}
+const neuron=new THREE.LineSegments(neuronGeo(),mat(.3));neuron.position.y=1;neuron.visible=false;group.add(neuron);
+
+// ---------- Interacción ----------
+let mx=0,my=0,idle=0,yaw=0,pitch=0,base=0,zoom=1,mode='brain',t0=performance.now();
+const fire=()=>{shared.uFire.value=performance.now()/1000};
+function setMode(m){mode=m;brain.visible=m==='brain';neuron.visible=m==='neuron';t0=performance.now();
+  $('bBrain').classList.toggle('on',m==='brain');$('bNeuron').classList.toggle('on',m==='neuron');if(m==='neuron')setTimeout(fire,2600)}
+$('bBrain').onclick=()=>setMode('brain');$('bNeuron').onclick=()=>setMode('neuron');
+$('bFall').onclick=()=>{t0=performance.now()};$('bFire').onclick=fire;
+const cv=renderer.domElement;
+addEventListener('pointermove',e=>{mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1;idle=0});
+cv.addEventListener('click',fire);
+cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.min(1.8,Math.max(.5,zoom+e.deltaY*.001))},{passive:false});
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+setInterval(()=>{if(mode==='neuron')fire()},4200);
+
+let last=performance.now();
+(function loop(){
+  requestAnimationFrame(loop);
+  const n=performance.now(),dt=Math.min((n-last)/1000,.05);last=n;
+  shared.uTime.value=n/1000;shared.uT.value=reduced?10:(n-t0)/1000;
+  idle+=dt;if(idle>3&&!reduced)base+=dt*.15;
+  yaw+=((base+mx*.7)-yaw)*.05;pitch+=((my*.25)-pitch)*.05;
+  group.rotation.set(pitch,yaw,0);
+  const tr=(mode==='brain'?9.5:17)*zoom;camera.position.z+=(tr-camera.position.z)*.06;
+  renderer.render(scene,camera);
+})();
+})();
 </script>
-
-
-</script>
-<!--Script for libraries threejs-->
-<!--<script type="module" src="main.js"></script>-->
-<script type="module" src="js/animation.js"></script>
-<script src="js/matter.js"></script>
-<script src="js/p5.min.js"></script>
-
-<!--<script  src="three.js" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r127/three.min.js"></script>-->
-
-
+</body>
 </html>
