@@ -20,23 +20,49 @@ button.on{background:#eaf2ff;color:#0b1020}
 #aboutMe{position:fixed;right:20px;top:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
 #title p{margin:6px 0 0;opacity:.7;letter-spacing:.2em;font-size:clamp(11px,1.4vw,14px);text-transform:uppercase}
 #hint{position:fixed;right:20px;bottom:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
+#fab{position:fixed;right:20px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:5;padding:11px 18px;font-size:15px;background:#eaf2ff;color:#0b1020;border:0;box-shadow:0 0 28px rgba(120,160,255,.45)}
+
+#chat{position:fixed;right:20px;bottom:calc(128px + env(safe-area-inset-bottom,0px));z-index:5;width:min(380px,92vw);height:min(500px,62vh);display:none;flex-direction:column;background:rgba(10,12,22,.82);border:1px solid var(--bd);border-radius:18px;backdrop-filter:blur(14px);overflow:hidden;box-shadow:0 10px 50px rgba(0,0,0,.6)}
+#chat.open{display:flex}
+#chat header{padding:12px 16px;border-bottom:1px solid var(--bd);font-size:14px;display:flex;justify-content:space-between;align-items:center}
+#chat header span{opacity:.6;font-size:12px}
+#msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:85%;padding:9px 13px;border-radius:14px;font-size:14px;line-height:1.45;white-space:pre-wrap}
+.m.b{align-self:flex-start;background:rgba(255,255,255,.1)}
+.m.u{align-self:flex-end;background:#eaf2ff;color:#0b1020}
+.dots span{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:#9db4ff;animation:bl 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes bl{0%,60%,100%{opacity:.25}30%{opacity:1}}
+#chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 10px}
+#chips button{font-size:12px;padding:5px 11px}
+#chat form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd)}
+#chat input{flex:1;font:inherit;font-size:14px;background:rgba(255,255,255,.08);color:var(--fg);border:1px solid var(--bd);border-radius:999px;padding:9px 14px;outline:none}
+#chat input:focus{border-color:#9db4ff}
+@media(max-width:520px){#hint{display:none}}
 </style>
 </head>
 <body>
 <div id="ui">
-  <button id="bBrain" class="on">🧠 Cerebro</button>
-  <button id="bNeuron">🔬 Neurona</button>
-  <button id="bFall">↻ Reensamblar</button>
-  <button id="bFire">⚡ Pulso</button>
+  <button id="bBrain" class="on">🧠 Brain</button>
+  <button id="bNeuron">🔬 Neuron</button>
+  <button id="bFall">↻ Reassemble</button>
+  <button id="bFire">⚡ Pulse</button>
 </div>
 <div id="aboutMe">
-  <button>About Me</button>
   <button>Roast your Code</button>
   <button>PipeLine</button>
 </div>
 <div id="title"><h2>Fatima</h2><p>Developer </p></div>
-<div id="hint">Mueve el mouse para rotar<br>clic: dispara un pulso · rueda: zoom</div>
+<div id="hint">Move the mouse to rotate<br>click: fire a pulse · scroll: zoom</div>
+<button id="fab" aria-label="Open chat">💬 Ask me</button>
+<section id="chat" aria-label="Portfolio chat">
+  <header>Fatima’s assistant <span>local answers</span></header>
+  <div id="msgs" aria-live="polite"></div>
+  <div id="chips"></div>
+  <form id="cf"><input id="ci" autocomplete="off" placeholder="Type your question…" aria-label="Your question"><button type="submit">Send</button></form>
+</section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <script>
 (function(){
 const $=id=>document.getElementById(id);
@@ -135,6 +161,55 @@ cv.addEventListener('click',fire);
 cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.min(1.8,Math.max(.5,zoom+e.deltaY*.001))},{passive:false});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 setInterval(()=>{if(mode==='neuron')fire()},4200);
+
+// ================= CHAT (no server, no cost) =================
+// EDIT THIS LIST WITH YOUR INFO. k = keywords, a = answer, act = optional action.
+const KB=[
+ {k:['hi','hello','hey','greetings','good morning','good afternoon','whats up'],a:'Hi! 👋 I’m the assistant for Fatima’s portfolio. Ask me about their background, projects, skills or how to get in touch.'},
+ {k:['who are you','who is','introduce yourself','about you','about me','profile','what do you do','bio'],a:'Fatima is a developer passionate about neuroscience and technology. They love understanding how neurons connect and turning that complexity into interactive visualizations.'},
+ {k:['education','studied','study','degree','university','college','school','masters','phd','bachelor','courses','certifications'],a:'Education: Computer Science at UNANM . Courses and certifications: [course 1], [course 2].'},
+ {k:['skills','technologies','tech stack','stack','programming','python','javascript','react','tools','abilities','expertise'],a:'Skills: Python, JavaScript/React, Three.js, data analysis, [neuroimaging / EEG / whatever you know]. Always learning something new.'},
+ {k:['projects','research','built','developed','publications','thesis','what have you made','what have you built'],a:'Highlighted projects:\n• [Project 1]: short description.\n• [Project 2]: short description.\n• This portfolio: a fiber brain and a neuron in 3D.'},
+ {k:['experience','worked','job','jobs','employment','company','internship','lab','career','work history'],a:'Experience: [Role] at [Place] ([year]–[year]), where [what you did].'},
+ {k:['neuroscience','brain','neurons','tractography','connectome','fibers','interests','interested'],a:'I’m fascinated by brain connectivity: how millions of fibers form networks that think. Watch the brain light up! ⚡',act:'fire'},
+ {k:['show neuron','show me the neuron','switch to neuron','neuron','dendrites','axon'],a:'Here’s a neuron with its dendrites and its axon firing signals 🔬',act:'neuron'},
+ {k:['show brain','back to brain','show me the brain','switch to brain','go back to brain'],a:'Back to the fiber brain 🧠',act:'brain'},
+ {k:['how did you build','how is this made','built with','three','threejs','webgl','this page','this site','technology behind'],a:'This page is built with Three.js: thousands of lines with a custom shader for the falling animation and the light pulses. Color follows each fiber’s direction, just like in tractography.'},
+ {k:['contact','email','mail','reach','linkedin','github','social','message','get in touch'],a:'You can write to [faaaa26@gmail.com], or find them on LinkedIn ([link]) and GitHub ([link]).'},
+ {k:['available','hire','hiring','freelance','collaborate','collaboration','opportunities','open to work','job offer'],a:'Yes, they’re open to collaborations and proposals. The best way is to email them with the details.'},
+ {k:['languages','what languages','do you speak','speak','english','spanish'],a:'Spanish (native) and English ([level]).'},
+ {k:['where do you live','location','city','country','live','based'],a:'Based in [City, Country], and works remotely when possible.'},
+ {k:['thanks','thank you','great','awesome','cool','amazing','nice'],a:'You’re welcome! 😊 If you want to know anything else, I’m here.'},
+ {k:['bye','goodbye','see you','later','farewell'],a:'See you soon! 👋 Thanks for visiting the portfolio.'}
+];
+const FALLBACK='Hmm, I don’t have that noted down 🤔. Try one of these questions, or email them directly.';
+const CHIPS=['Who are you?','Education','Projects','Skills','Contact','Show neuron'];
+const norm=t=>t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+function lev(a,b){const d=[];for(let i=0;i<=a.length;i++)d[i]=[i];for(let j=0;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function match(text){
+  const q=norm(text),w=q.split(' ').filter(Boolean);let best=null,bs=0;
+  for(const e of KB){let s=0;
+    for(const k of e.k){const nk=norm(k);
+      if(nk.includes(' ')){if(q.includes(nk))s+=3}
+      else if(w.includes(nk))s+=2;
+      else if(nk.length>=5)for(const x of w)if(x.length>=5&&lev(x,nk)<=1){s+=1.2;break}}
+    if(s>bs){bs=s;best=e}}
+  return bs>=1.2?best:null;
+}
+const chat=$('chat'),msgs=$('msgs'),ci=$('ci');let greeted=false,busy=false;
+function addMsg(role,text){const d=document.createElement('div');d.className='m '+role;d.textContent=text;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function chips(){const c=$('chips');c.innerHTML='';CHIPS.forEach(t=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=()=>ask(t);c.appendChild(b)})}
+function reply(text,act){
+  busy=true;const d=addMsg('b','');d.innerHTML='<span class="dots"><span></span><span></span><span></span></span>';
+  setTimeout(()=>{d.textContent='';fire();
+    if(act==='neuron')setMode('neuron');else if(act==='brain')setMode('brain');else if(act==='fire')setTimeout(fire,300);
+    if(reduced){d.textContent=text;busy=false;msgs.scrollTop=msgs.scrollHeight;return}
+    let i=0;const iv=setInterval(()=>{i+=2;d.textContent=text.slice(0,i);msgs.scrollTop=msgs.scrollHeight;if(i>=text.length){clearInterval(iv);busy=false}},14)},550+Math.random()*350);
+}
+function ask(text){text=text.trim();if(!text||busy)return;addMsg('u',text);const m=match(text);m?reply(m.a,m.act):reply(FALLBACK)}
+$('cf').addEventListener('submit',e=>{e.preventDefault();const v=ci.value;ci.value='';ask(v)});
+$('fab').onclick=()=>{chat.classList.toggle('open');if(chat.classList.contains('open')){ci.focus();if(!greeted){greeted=true;chips();reply('Hi! 👋 I’m Fatima’s portfolio assistant. Ask me anything about their background, or tap a suggestion.')}}};
 
 let last=performance.now();
 (function loop(){
