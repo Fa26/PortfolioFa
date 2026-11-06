@@ -19,10 +19,15 @@ button.on{background:#eaf2ff;color:#0b1020}
 #title h2{margin:0;font-size:clamp(28px,5vw,56px);letter-spacing:.12em;font-weight:300}
 #aboutMe{position:fixed;right:20px;top:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
 #title p{margin:6px 0 0;opacity:.7;letter-spacing:.2em;font-size:clamp(11px,1.4vw,14px);text-transform:uppercase}
-#hint{position:fixed;right:20px;bottom:calc(30px + env(safe-area-inset-bottom,0px));opacity:.55;font-size:12px;text-align:right;max-width:40vw;pointer-events:none}
-#fab{position:fixed;right:20px;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:5;padding:11px 18px;font-size:15px;background:#eaf2ff;color:#0b1020;border:0;box-shadow:0 0 28px rgba(120,160,255,.45)}
+#hint{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(30px + env(safe-area-inset-bottom,0px));text-align:center;max-width:min(440px,92vw);font-size:12px;opacity:.85;pointer-events:none;transition:opacity .2s;text-shadow:0 2px 14px #000}
+#hint.sw{opacity:0}
+#hint b{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.6;margin-bottom:5px;font-weight:600}
+#hint .eq{display:block;font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:16px;line-height:1.55;color:#cfe0ff}
+#hint small{display:block;opacity:.65;margin-top:5px;font-size:11px;line-height:1.4}
+@media(max-width:900px){#hint{bottom:calc(110px + env(safe-area-inset-bottom,0px))}}
 
-#chat{position:fixed;right:20px;bottom:calc(128px + env(safe-area-inset-bottom,0px));z-index:5;width:min(380px,92vw);height:min(500px,62vh);display:none;flex-direction:column;background:rgba(10,12,22,.82);border:1px solid var(--bd);border-radius:18px;backdrop-filter:blur(14px);overflow:hidden;box-shadow:0 10px 50px rgba(0,0,0,.6)}
+#fab{position:fixed;right:28px;bottom:calc(30px + env(safe-area-inset-bottom,0px));z-index:5;padding:11px 18px;font-size:15px;background:#eaf2ff;color:#0b1020;border:0;box-shadow:0 0 28px rgba(120,160,255,.45)}
+#chat{position:fixed;right:28px;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:5;width:min(380px,92vw);height:min(500px,62vh);display:none;flex-direction:column;background:rgba(10,12,22,.82);border:1px solid var(--bd);border-radius:18px;backdrop-filter:blur(14px);overflow:hidden;box-shadow:0 10px 50px rgba(0,0,0,.6)}
 #chat.open{display:flex}
 #chat header{padding:12px 16px;border-bottom:1px solid var(--bd);font-size:14px;display:flex;justify-content:space-between;align-items:center}
 #chat header span{opacity:.6;font-size:12px}
@@ -38,22 +43,23 @@ button.on{background:#eaf2ff;color:#0b1020}
 #chat form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bd)}
 #chat input{flex:1;font:inherit;font-size:14px;background:rgba(255,255,255,.08);color:var(--fg);border:1px solid var(--bd);border-radius:999px;padding:9px 14px;outline:none}
 #chat input:focus{border-color:#9db4ff}
-@media(max-width:520px){#hint{display:none}}
+
 </style>
 </head>
 <body>
 <div id="ui">
-  <button id="bBrain" class="on">🧠 Brain</button>
-  <button id="bNeuron">🔬 Neuron</button>
-  <button id="bFall">↻ Reassemble</button>
-  <button id="bFire">⚡ Pulse</button>
+  <button id="bBrain" class="on">Brain</button>
+  <button id="bNeuron">Neuron</button>
+  <button id="bFall">Reassemble</button>
+  <button id="bFire">Pulse</button>
 </div>
 <div id="aboutMe">
   <button>Roast your Code</button>
-  <button>PipeLine</button>
+  <button>EcoBici</button>
 </div>
 <div id="title"><h2>Fatima</h2><p>Developer </p></div>
 <div id="hint">Move the mouse to rotate<br>click: fire a pulse · scroll: zoom</div>
+
 <button id="fab" aria-label="Open chat">💬 Ask me</button>
 <section id="chat" aria-label="Portfolio chat">
   <header>Fatima’s assistant <span>local answers</span></header>
@@ -62,7 +68,6 @@ button.on{background:#eaf2ff;color:#0b1020}
   <form id="cf"><input id="ci" autocomplete="off" placeholder="Type your question…" aria-label="Your question"><button type="submit">Send</button></form>
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <script>
 (function(){
 const $=id=>document.getElementById(id);
@@ -101,7 +106,7 @@ function Builder(){
   };
 }
 
-// ---------- CEREBRO ----------
+// ---------- BRAIN ----------
 function surf(){const u=R()*6.283,v=Math.acos(2*R()-1);let y=Math.cos(v)*1.8;if(y<0)y*=.5;return new V(Math.sin(v)*Math.cos(u)*1.7,y,Math.sin(v)*Math.sin(u)*3.0)}
 function dirCol(d){const w=R()*.35,c=[Math.pow(Math.abs(d.x),.6),Math.pow(Math.abs(d.z),.6),Math.pow(Math.abs(d.y),.6)];return c.map(x=>x*(1-w)+w)}
 function brainGeo(){
@@ -126,7 +131,7 @@ function brainGeo(){
 }
 const brain=new THREE.LineSegments(brainGeo(),mat(.6));brain.rotation.y=Math.PI/2;group.add(brain);
 
-// ---------- NEURONA ----------
+// ---------- NEURON ----------
 function neuronGeo(){
   const B=Builder();
   function seg(a,b,c0,c1,o,dl,d0,d1,p){for(let k=0;k<2;k++){const j=rv(k*.05);B.push(a.clone().add(j),b.clone().add(j),c0,c1,o,dl,d0,d1,p)}}
@@ -148,20 +153,32 @@ function neuronGeo(){
 }
 const neuron=new THREE.LineSegments(neuronGeo(),mat(.3));neuron.position.y=1;neuron.visible=false;group.add(neuron);
 
-// ---------- Interacción ----------
+// ---------- Interaction ----------
 let mx=0,my=0,idle=0,yaw=0,pitch=0,base=0,zoom=1,mode='brain',t0=performance.now();
 const fire=()=>{shared.uFire.value=performance.now()/1000};
-function setMode(m){mode=m;brain.visible=m==='brain';neuron.visible=m==='neuron';t0=performance.now();
+function setMode(m){showInfo(m);mode=m;brain.visible=m==='brain';neuron.visible=m==='neuron';t0=performance.now();
   $('bBrain').classList.toggle('on',m==='brain');$('bNeuron').classList.toggle('on',m==='neuron');if(m==='neuron')setTimeout(fire,2600)}
 $('bBrain').onclick=()=>setMode('brain');$('bNeuron').onclick=()=>setMode('neuron');
-$('bFall').onclick=()=>{t0=performance.now()};$('bFire').onclick=fire;
+$('bFall').onclick=()=>{t0=performance.now();showInfo('fall')};$('bFire').onclick=()=>{fire();showInfo('pulse')};
 const cv=renderer.domElement;
 addEventListener('pointermove',e=>{mx=e.clientX/innerWidth*2-1;my=e.clientY/innerHeight*2-1;idle=0});
-cv.addEventListener('click',fire);
+cv.addEventListener('click',()=>{fire();showInfo('pulse')});
 cv.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.min(1.8,Math.max(.5,zoom+e.deltaY*.001))},{passive:false});
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 setInterval(()=>{if(mode==='neuron')fire()},4200);
 
+
+
+// ---- Info card: shows a formula for the last button pressed ----
+const INFO={
+ brain:['Brain · diffusion tractography','<span class="eq">FA = √½ · √[(λ₁−λ₂)² + (λ₂−λ₃)² + (λ₃−λ₁)²] / √(λ₁² + λ₂² + λ₃²)</span>','Fractional anisotropy from diffusion MRI. Color encodes fiber direction: red = left–right, green = front–back, blue = up–down.'],
+ neuron:['Neuron · cable theory','<span class="eq">λ² ∂²V/∂x² = τ ∂V/∂t + V &nbsp;,&nbsp; λ = √(r<sub>m</sub>/r<sub>i</sub>)</span>','Voltage decays along a dendrite with length constant λ, so distant inputs weigh less at the soma.'],
+ pulse:['Pulse · action potential (Hodgkin–Huxley)','<span class="eq">C<sub>m</sub> dV/dt = −g<sub>Na</sub>m³h(V−E<sub>Na</sub>) − g<sub>K</sub>n⁴(V−E<sub>K</sub>) − g<sub>L</sub>(V−E<sub>L</sub>) + I</span>','In this scene the spark travels as p(x,t) = e<sup>−(x − vt)²</sup>, with v = 5 units per second.'],
+ fall:['Reassemble · easing','<span class="eq">e(t) = 1 − (1 − t)³</span>','Each fiber falls into place with a cubic ease-out, delayed by a random offset.']
+};
+let infoT;
+function showInfo(k){const h=$('hint'),d=INFO[k];if(!d)return;clearTimeout(infoT);h.classList.add('sw');
+  infoT=setTimeout(()=>{h.innerHTML='<b>'+d[0]+'</b>'+d[1]+'<small>'+d[2]+'</small>';h.classList.remove('sw')},180)}
 // ================= CHAT (no server, no cost) =================
 // EDIT THIS LIST WITH YOUR INFO. k = keywords, a = answer, act = optional action.
 const KB=[
@@ -203,7 +220,7 @@ function chips(){const c=$('chips');c.innerHTML='';CHIPS.forEach(t=>{const b=doc
 function reply(text,act){
   busy=true;const d=addMsg('b','');d.innerHTML='<span class="dots"><span></span><span></span><span></span></span>';
   setTimeout(()=>{d.textContent='';fire();
-    if(act==='neuron')setMode('neuron');else if(act==='brain')setMode('brain');else if(act==='fire')setTimeout(fire,300);
+    if(act==='neuron')setMode('neuron');else if(act==='brain')setMode('brain');else if(act==='fire'){setTimeout(fire,300);showInfo('pulse')}
     if(reduced){d.textContent=text;busy=false;msgs.scrollTop=msgs.scrollHeight;return}
     let i=0;const iv=setInterval(()=>{i+=2;d.textContent=text.slice(0,i);msgs.scrollTop=msgs.scrollHeight;if(i>=text.length){clearInterval(iv);busy=false}},14)},550+Math.random()*350);
 }
